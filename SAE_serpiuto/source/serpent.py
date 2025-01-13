@@ -334,6 +334,8 @@ def copy_serpent(serpent:dict)->dict:
     Returns:
         dict: la copie du serpent passé en paramètres
     """ 
+
     serpent2={"nom":get_nom(serpent),"numero":get_num_joueur(serpent),"points":get_points(serpent),"positions":get_liste_pos,"temps_surp":get_temps_surpuissance(serpent),"temps_protec":get_temps_protection(serpent),"temps":(serpent),"temps_mange":get_temps_mange_mur(serpent),"der_direction":get_derniere_direction(serpent)}
     return serpent2
+
 
