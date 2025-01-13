@@ -37,7 +37,7 @@ def get_nom(serpent:dict)->str:
     """    
     ...
 
-def get_num_joueur(serpent:dict)->int:
+def get_num_joueur(serpent:dict)->int: #Erika
     """retourne le numéro du joueur associé au serpent
 
     Args:
@@ -48,7 +48,7 @@ def get_num_joueur(serpent:dict)->int:
     """   
     return serpent["num_joueur"]
 
-def get_points(serpent:dict)->int:
+def get_points(serpent:dict)->int: #Erika
     """retourne le nombre de points du joueur associé au serpent
 
     Args:
@@ -106,7 +106,7 @@ def get_bonus(serpent:dict)->list:
 
 
 
-def ajouter_points(serpent:dict,nb_points:int):
+def ajouter_points(serpent:dict,nb_points:int): #Erika
     """ajoute (ou enlève) des points à un serpent
 
     Args:
@@ -115,7 +115,7 @@ def ajouter_points(serpent:dict,nb_points:int):
     """    
     serpent["points"]+=nb_points
 
-def set_liste_pos(serpent:dict, tete:list):
+def set_liste_pos(serpent:dict, tete:list): #Erika
     """initialise la liste des positionsd'un serpent
 
     Args:
@@ -169,7 +169,7 @@ def get_temps_mange_mur(serpent:dict)->int:
     """   
     ...
 
-def get_temps_surpuissance(serpent:dict)->int:
+def get_temps_surpuissance(serpent:dict)->int: #Erika
     """indique le temps restant pour le bonus surpuissance
 
     Args:
@@ -180,7 +180,7 @@ def get_temps_surpuissance(serpent:dict)->int:
     """   
     return serpent["tps_s"]
 
-def ajouter_temps_protection(serpent:dict, temps:int)->int:
+def ajouter_temps_protection(serpent:dict, temps:int)->int: #Erika
     """ajoute du temps supplémentaire pour le bonus protection
 
     Args:
@@ -241,7 +241,7 @@ def serpent_2_str(serpent:dict, sep=";")->str:
     """    
     ...
 
-def serpent_from_str(la_chaine, sep=";")->dict:
+def serpent_from_str(la_chaine, sep=";")->dict: #Erika
     """Reconstruit un serpent à partir d'une chaine de caractères
        telle que celle produite par la fonction précédente
 
@@ -255,7 +255,7 @@ def serpent_from_str(la_chaine, sep=";")->dict:
     nom_joueur,num_joueur,nb_points,positions,tps_s,tps_p,tps_m,direction=la_chaine.split(sep)
     return {"nom_joueur":nom_joueur, "num_joueur":num_joueur, "nb_points":nb_points, "positions":positions,"tps_s":tps_s,"tps_p":tps_p,"tps_m":tps_m,"direction":direction}
 
-def copy_serpent(serpent:dict)->dict:
+def copy_serpent(serpent:dict)->dict: #Erika
     """fait une copie du serpent passer en paramètres
     Attention à bien faire une copie de la liste des positions
         
