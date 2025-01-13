@@ -337,5 +337,3 @@ def copy_serpent(serpent:dict)->dict:
     serpent2={"nom":get_nom(serpent),"numero":get_num_joueur(serpent),"points":get_points(serpent),"positions":get_liste_pos,"temps_surp":get_temps_surpuissance(serpent),"temps_protec":get_temps_protection(serpent),"temps":(serpent),"temps_mange":get_temps_mange_mur(serpent),"der_direction":get_derniere_direction(serpent)}
     return serpent2
 
-
-print(serpent_2_str({"nom_joueur":"test","num_joueur":"num_joueur","points":140,"positions":[1,1,1,1,1,1,1,1,1,1,1],"tps_s":1,"tps_p":1,"tps_m":1,"direction":"n"}, sep=";"))
