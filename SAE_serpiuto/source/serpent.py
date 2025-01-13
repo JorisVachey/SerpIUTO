@@ -46,7 +46,7 @@ def get_num_joueur(serpent:dict)->int: #Erika
     Returns:
         int: le numéro du joueur associé à ce serpent
     """   
-    return serpent["num_joueur"]
+    return serpent["numero"]
 
 def get_points(serpent:dict)->int: #Erika
     """retourne le nombre de points du joueur associé au serpent
@@ -122,7 +122,7 @@ def set_liste_pos(serpent:dict, tete:list): #Erika
         serpent (dict): le serpent considéré
         tete (list): la liste des positions occupées par ce serpent
     """    
-    serpent["positions"]=tete
+    serpent["pos"]=tete
 
 def set_derniere_direction(serpent:dict, direction:str):
     """Met à jout la dernière direction utilisée par le serpent (utile pour l'affichage)
@@ -178,7 +178,7 @@ def get_temps_surpuissance(serpent:dict)->int: #Erika
     Returns:
         int: le nombre de tours restant pour ce bonus
     """   
-    return serpent["tps_s"]
+    return serpent["temps_surp"]
 
 def ajouter_temps_protection(serpent:dict, temps:int)->int: #Erika
     """ajoute du temps supplémentaire pour le bonus protection
@@ -190,7 +190,7 @@ def ajouter_temps_protection(serpent:dict, temps:int)->int: #Erika
     Returns:
         int: le nombre de tours total restant pour ce bonus
     """    
-    return serpent["tps_p"]+temps
+    return serpent["temps_protec"]+temps
 
 def ajouter_temps_mange_mur(serpent:dict, temps:int)->int:
     """ajoute du temps supplémentaire pour le bonus mange mur
