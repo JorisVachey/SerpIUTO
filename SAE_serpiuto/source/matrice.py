@@ -74,7 +74,7 @@ def get_nb_colonnes(mat:dict)-> int:
     """    
     return mat["nb_col"]
 
-def get_dim(matrice:dict)->[int,int]:
+def get_dim(matrice:dict)->list[int,int]:
     """retourne les dimensions de la matrice sous la forme d'un tuple (nb_lig,nb_col)
 
     Args:
