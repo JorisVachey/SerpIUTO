@@ -41,8 +41,8 @@ def get_nom(serpent:dict)->str:
 
    Returns:
        str: le nom du joueur associé à ce serpent
-   """   
-   ...
+   """  
+   return serpent["nom_joueur"]
 
 
 
@@ -84,7 +84,7 @@ def get_liste_pos(serpent:dict)->list:
    Returns:
        list: la liste des positions occupées par le serpent
    """   
-   ...
+   return serpent["positions"]
 
 
 def get_queue(serpent:dict)->list[int,int]:
@@ -127,7 +127,13 @@ def get_bonus(serpent:dict)->list:
    Returns:
        list: la liste des bonus du joueur
    """   
-   ...
+   res=[]
+   if serpent["tps_s"]>0:
+      res.append(serpent["tps_s"])
+   if serpent["tps_p"]>0:
+      res.append(serpent["tps_p"])
+   if serpent["tps_m"]>0:
+      res.append(serpent["tps_m"])
 
 
 
@@ -162,7 +168,7 @@ def set_derniere_direction(serpent:dict, direction:str):
        serpent (dict): le serpent considéré
        direction (str): un des caractère N S E O
    """   
-   ...
+   serpent["direction"]=direction
 
 
 def to_str(serpent:dict)->str:
@@ -208,7 +214,7 @@ def get_temps_mange_mur(serpent:dict)->int:
    Returns:
        int: le nombre de tours restant pour ce bonus
    """  
-   ...
+   return serpent["tps_m"]
 
 
 
@@ -250,7 +256,7 @@ def ajouter_temps_mange_mur(serpent:dict, temps:int)->int:
    Returns:
        int: le nombre de tours total restant pour ce bonus
    """   
-   ...
+   serpent["tps_m"]+=temps
 
 
 def ajouter_temps_surpuissance(serpent:dict, temps:int)->int:
@@ -299,7 +305,8 @@ def serpent_2_str(serpent:dict, sep=";")->str:
    Returns:
        str: la chaine de caractères contenant les toutes informations du serpent
    """   
-   ...
+   pos=[str(x) for x in serpent["positions"]]
+   return f"{serpent['nom_joueur']}{sep}{serpent['num_joueur']}{sep}{serpent['points']}{sep}{serpent['tps_s']}{sep}{serpent['tps_p']}{sep}{serpent['tps_m']} \n"+' '.join(pos)
 
 
 
@@ -330,3 +337,5 @@ def copy_serpent(serpent:dict)->dict:
     serpent2={"nom":get_nom(serpent),"numero":get_num_joueur(serpent),"points":get_points(serpent),"positions":get_liste_pos,"temps_surp":get_temps_surpuissance(serpent),"temps_protec":get_temps_protection(serpent),"temps":(serpent),"temps_mange":get_temps_mange_mur(serpent),"der_direction":get_derniere_direction(serpent)}
     return serpent2
 
+
+print(serpent_2_str({"nom_joueur":"test","num_joueur":"num_joueur","points":140,"positions":[1,1,1,1,1,1,1,1,1,1,1],"tps_s":1,"tps_p":1,"tps_m":1,"direction":"n"}, sep=";"))
