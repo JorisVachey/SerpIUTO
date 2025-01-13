@@ -57,7 +57,7 @@ def get_points(serpent:dict)->int:
     Returns:
         int: le nombre de points du joueur associé à ce serpent
     """   
-    ...
+    return serpent["points"]
 
 def get_liste_pos(serpent:dict)->list:
     """retourne la liste des positions occupées par le serpent sur l'arène. La première position étant la tête du serpent
@@ -113,7 +113,7 @@ def ajouter_points(serpent:dict,nb_points:int):
         serpent (dict): le serpent considéré
         nb_points (int): le nombre de points à ajouter (si négatif enlève des points)
     """    
-    ...
+    serpent["points"]+=nb_points
 
 def set_liste_pos(serpent:dict, tete:list):
     """initialise la liste des positionsd'un serpent
@@ -122,7 +122,7 @@ def set_liste_pos(serpent:dict, tete:list):
         serpent (dict): le serpent considéré
         tete (list): la liste des positions occupées par ce serpent
     """    
-    ...
+    serpent["positions"]=tete
 
 def set_derniere_direction(serpent:dict, direction:str):
     """Met à jout la dernière direction utilisée par le serpent (utile pour l'affichage)
@@ -178,7 +178,7 @@ def get_temps_surpuissance(serpent:dict)->int:
     Returns:
         int: le nombre de tours restant pour ce bonus
     """   
-    ...
+    return serpent["tps_s"]
 
 def ajouter_temps_protection(serpent:dict, temps:int)->int:
     """ajoute du temps supplémentaire pour le bonus protection
@@ -190,7 +190,7 @@ def ajouter_temps_protection(serpent:dict, temps:int)->int:
     Returns:
         int: le nombre de tours total restant pour ce bonus
     """    
-    ...
+    return serpent["tps_p"]+temps
 
 def ajouter_temps_mange_mur(serpent:dict, temps:int)->int:
     """ajoute du temps supplémentaire pour le bonus mange mur
@@ -252,17 +252,17 @@ def serpent_from_str(la_chaine, sep=";")->dict:
     Returns:
         dict: Le serpent représenté dans la chaine de caractères
     """    
-    ...
+    nom_joueur,num_joueur,nb_points,positions,tps_s,tps_p,tps_m,direction=la_chaine.split(sep)
+    return {"nom_joueur":nom_joueur, "num_joueur":num_joueur, "nb_points":nb_points, "positions":positions,"tps_s":tps_s,"tps_p":tps_p,"tps_m":tps_m,"direction":direction}
 
-    def copy_serpent(serpent:dict)->dict:
-        """fait une copie du serpent passer en paramètres
-        Attention à bien faire une copie de la liste des positions
+def copy_serpent(serpent:dict)->dict:
+    """fait une copie du serpent passer en paramètres
+    Attention à bien faire une copie de la liste des positions
         
+    Args:
+        serpent (dict): le serpent à recopier
 
-        Args:
-            serpent (dict): le serpent à recopier
-
-        Returns:
-            dict: la copie du serpent passé en paramètres
-        """ 
-        ...       
+    Returns:
+        dict: la copie du serpent passé en paramètres
+    """ 
+    ...
