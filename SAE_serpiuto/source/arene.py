@@ -114,7 +114,7 @@ def set_plan(arene:dict,plan:str)->bool:
             return False
     return True
 
-def get_dim(arene:dict)->[int,int]:
+def get_dim(arene:dict)->list:
     """return les dimensions de l'arène sous la forme (nb_lignes,nb_colonnes)
 
     Args:
