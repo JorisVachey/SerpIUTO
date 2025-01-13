@@ -268,5 +268,3 @@ def copy_serpent(serpent:dict)->dict: #Erika
         dict: la copie du serpent passé en paramètres
     """ 
     return {"nom":get_nom(serpent),"numero":get_num_joueur(serpent),"points":get_points(serpent),"positions":get_liste_pos,"temps_surp":get_temps_surpuissance(serpent),"temps_protec":get_temps_protection(serpent),"temps":(serpent),"temps_mange":get_temps_mange_mur(serpent),"der_direction":get_derniere_direction(serpent)}
-    
-print(serpent_from_str("Erika,2,28,[(1,1),(1,2),(1,3)],0,1,0,N"))
