@@ -306,7 +306,7 @@ def serpent_2_str(serpent:dict, sep=";")->str:
        str: la chaine de caractères contenant les toutes informations du serpent
    """   
    pos=[str(x) for x in serpent["positions"]]
-   return f"{serpent['nom_joueur']}{sep}{serpent['num_joueur']}{sep}{serpent['points']}{sep}{serpent['tps_s']}{sep}{serpent['tps_p']}{sep}{serpent['tps_m']} \n"+' '.join(pos)
+   return f"{serpent['nom_joueur']}{sep}{serpent['num_joueur']}{sep}{serpent['points']}{sep}{serpent['position']}{sep}{serpent['tps_s']}{sep}{serpent['tps_p']}{sep}{serpent['tps_m']} \n"+' '.join(pos)
 
 
 
