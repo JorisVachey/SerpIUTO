@@ -858,4 +858,5 @@ def copy_arene(arene:dict)->dict:
     Returns:
         dict: la copie de l'arène passée en paramètre
     """
-    return Arene(arene["nb_lig"],arene["nb_col"],arene["noms_participants"])
+    copie_arene= Arene(arene["nb_lig"],arene["nb_col"],arene["noms_participants"])
+    return copie_arene
