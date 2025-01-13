@@ -253,7 +253,7 @@ def serpent_from_str(la_chaine, sep=";")->dict: #Erika
         dict: Le serpent représenté dans la chaine de caractères
     """    
     nom_joueur,num_joueur,nb_points,positions,tps_s,tps_p,tps_m,direction=la_chaine.split(sep)
-    return {"nom_joueur":nom_joueur, "num_joueur":num_joueur, "nb_points":nb_points, "positions":positions,"tps_s":tps_s,"tps_p":tps_p,"tps_m":tps_m,"direction":direction}
+    return {"nom":nom_joueur, "numero":num_joueur, "points":nb_points, "pos":positions,"temps_surp":tps_s,"temps_protec":tps_p,"temps_mange":tps_m,"der_direction":direction}
 
 def copy_serpent(serpent:dict)->dict: #Erika
     """fait une copie du serpent passer en paramètres
@@ -265,4 +265,5 @@ def copy_serpent(serpent:dict)->dict: #Erika
     Returns:
         dict: la copie du serpent passé en paramètres
     """ 
-    res={}
+    dico={"nom":get_nom(serpent),"numero":get_num_joueur(serpent),"points":get_points(serpent),"positions":get_liste_pos,"temps_surp":get_temps_surpuissance(serpent),"temps_protec":get_temps_protection(serpent),"temps":(serpent),"temps_mange":get_temps_mange_mur(serpent),"der_direction":get_derniere_direction(serpent)}
+    return dico
