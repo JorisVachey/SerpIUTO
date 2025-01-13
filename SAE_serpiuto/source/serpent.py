@@ -37,7 +37,7 @@ def get_nom(serpent:dict)->str:
     """    
     ...
 
-def get_num_joueur(serpent:dict)->int:
+def get_num_joueur(serpent:dict)->int: #Erika
     """retourne le numéro du joueur associé au serpent
 
     Args:
@@ -46,9 +46,9 @@ def get_num_joueur(serpent:dict)->int:
     Returns:
         int: le numéro du joueur associé à ce serpent
     """   
-    ...
+    return serpent["numero"]
 
-def get_points(serpent:dict)->int:
+def get_points(serpent:dict)->int: #Erika
     """retourne le nombre de points du joueur associé au serpent
 
     Args:
@@ -57,7 +57,7 @@ def get_points(serpent:dict)->int:
     Returns:
         int: le nombre de points du joueur associé à ce serpent
     """   
-    ...
+    return serpent["points"]
 
 def get_liste_pos(serpent:dict)->list:
     """retourne la liste des positions occupées par le serpent sur l'arène. La première position étant la tête du serpent
@@ -106,23 +106,23 @@ def get_bonus(serpent:dict)->list:
 
 
 
-def ajouter_points(serpent:dict,nb_points:int):
+def ajouter_points(serpent:dict,nb_points:int): #Erika
     """ajoute (ou enlève) des points à un serpent
 
     Args:
         serpent (dict): le serpent considéré
         nb_points (int): le nombre de points à ajouter (si négatif enlève des points)
     """    
-    ...
+    serpent["points"]+=nb_points
 
-def set_liste_pos(serpent:dict, tete:list):
+def set_liste_pos(serpent:dict, tete:list): #Erika
     """initialise la liste des positionsd'un serpent
 
     Args:
         serpent (dict): le serpent considéré
         tete (list): la liste des positions occupées par ce serpent
     """    
-    ...
+    serpent["pos"]=tete
 
 def set_derniere_direction(serpent:dict, direction:str):
     """Met à jout la dernière direction utilisée par le serpent (utile pour l'affichage)
@@ -169,7 +169,7 @@ def get_temps_mange_mur(serpent:dict)->int:
     """   
     ...
 
-def get_temps_surpuissance(serpent:dict)->int:
+def get_temps_surpuissance(serpent:dict)->int: #Erika
     """indique le temps restant pour le bonus surpuissance
 
     Args:
@@ -178,9 +178,9 @@ def get_temps_surpuissance(serpent:dict)->int:
     Returns:
         int: le nombre de tours restant pour ce bonus
     """   
-    ...
+    return serpent["temps_surp"]
 
-def ajouter_temps_protection(serpent:dict, temps:int)->int:
+def ajouter_temps_protection(serpent:dict, temps:int)->int: #Erika
     """ajoute du temps supplémentaire pour le bonus protection
 
     Args:
@@ -190,7 +190,7 @@ def ajouter_temps_protection(serpent:dict, temps:int)->int:
     Returns:
         int: le nombre de tours total restant pour ce bonus
     """    
-    ...
+    return get_temps_protection(serpent)+temps
 
 def ajouter_temps_mange_mur(serpent:dict, temps:int)->int:
     """ajoute du temps supplémentaire pour le bonus mange mur
@@ -241,7 +241,7 @@ def serpent_2_str(serpent:dict, sep=";")->str:
     """    
     ...
 
-def serpent_from_str(la_chaine, sep=";")->dict:
+def serpent_from_str(la_chaine, sep=";")->dict: #Erika
     """Reconstruit un serpent à partir d'une chaine de caractères
        telle que celle produite par la fonction précédente
 
@@ -252,17 +252,18 @@ def serpent_from_str(la_chaine, sep=";")->dict:
     Returns:
         dict: Le serpent représenté dans la chaine de caractères
     """    
-    ...
+    nom_joueur,num_joueur,nb_points,positions,tps_s,tps_p,tps_m,direction=la_chaine.split(sep)
+    return {"nom":nom_joueur, "numero":num_joueur, "points":nb_points, "pos":positions,"temps_surp":tps_s,"temps_protec":tps_p,"temps_mange":tps_m,"der_direction":direction}
 
-    def copy_serpent(serpent:dict)->dict:
-        """fait une copie du serpent passer en paramètres
-        Attention à bien faire une copie de la liste des positions
+def copy_serpent(serpent:dict)->dict: #Erika
+    """fait une copie du serpent passer en paramètres
+    Attention à bien faire une copie de la liste des positions
         
+    Args:
+        serpent (dict): le serpent à recopier
 
-        Args:
-            serpent (dict): le serpent à recopier
-
-        Returns:
-            dict: la copie du serpent passé en paramètres
-        """ 
-        ...       
+    Returns:
+        dict: la copie du serpent passé en paramètres
+    """ 
+    serpent2={"nom":get_nom(serpent),"numero":get_num_joueur(serpent),"points":get_points(serpent),"positions":get_liste_pos,"temps_surp":get_temps_surpuissance(serpent),"temps_protec":get_temps_protection(serpent),"temps":(serpent),"temps_mange":get_temps_mange_mur(serpent),"der_direction":get_derniere_direction(serpent)}
+    return serpent2
