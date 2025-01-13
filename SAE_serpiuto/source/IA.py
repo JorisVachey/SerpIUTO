@@ -57,7 +57,7 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
     return 'N'
-def mon_IA(num_joueur:int, la_partie:dict)->str:
+def mon_IA(num_joueur:int, la_partie:dict)->str: 
     """Fonction qui va prendre la decision du prochain coup pour le joueur de numéro ma_couleur
 
     Args:
