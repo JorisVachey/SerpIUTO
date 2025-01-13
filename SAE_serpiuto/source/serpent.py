@@ -178,7 +178,7 @@ def get_temps_protection(serpent:dict)->int:
    Returns:
        int: le nombre de tours restant pour ce bonus
    """   
-   ...
+   return serpent["tps_p"]
 
 
 def get_temps_mange_mur(serpent:dict)->int:
@@ -269,7 +269,8 @@ def ajouter_temps_surpuissance(serpent:dict, temps:int)->int:
    Returns:
        int: le nombre de tours total restant pour ce bonus
    """   
-   ...
+   serpent["tps_s"]+=temps
+   return get_temps_surpuissance(serpent)
 
 
 def maj_temps(serpent:dict):
@@ -279,9 +280,13 @@ def maj_temps(serpent:dict):
 
    Args:
        serpent (dict): le serpent considéré
-   """   
-   ...
-
+   """
+   if serpent["tps_s"] >0:
+    serpent["tps_s"]-=1
+   if serpent["tps_p"] >0:
+    serpent["tps_p"]-=1
+   if serpent["tps_m"] >0:
+    serpent["tps_m"]-=1
 
 def serpent_2_str(serpent:dict, sep=";")->str:
    """Sérialise un serpent sous la forme d'une chaine de caractères
