@@ -28,7 +28,7 @@ def Serpent(nom_joueur:str, num_joueur:int,points:int=0,positions:list=None,tps_
    Returns:
        dict: une dictionnaire contenant les informations du serpent
    """   
-   return {"nom":nom_joueur,"numero":num_joueur,"pos":positions,"temps_surp":tps_s,"temps_protec":tps_p,"temps_mange":tps_m,"der_direction":direction}
+   ...
 
 
 def get_nom(serpent:dict)->str:
