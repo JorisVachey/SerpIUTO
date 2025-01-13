@@ -46,7 +46,7 @@ def get_num_joueur(serpent:dict)->int:
     Returns:
         int: le numéro du joueur associé à ce serpent
     """   
-    ...
+    return serpent["num_joueur"]
 
 def get_points(serpent:dict)->int:
     """retourne le nombre de points du joueur associé au serpent
