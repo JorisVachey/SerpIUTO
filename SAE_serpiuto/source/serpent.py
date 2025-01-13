@@ -157,7 +157,7 @@ def set_liste_pos(serpent:dict, tete:list):
         serpent (dict): le serpent considéré
         tete (list): la liste des positions occupées par ce serpent
     """    
-    serpent["pos"]=tete
+    serpent["positions"]=tete
 
 
 def set_derniere_direction(serpent:dict, direction:str):
@@ -229,7 +229,7 @@ def get_temps_surpuissance(serpent:dict)->int:
    Returns:
        int: le nombre de tours restant pour ce bonus
    """  
-   return serpent["temps_surp"]
+   return serpent["tps_s"]
 
 
 def ajouter_temps_protection(serpent:dict, temps:int)->int:
