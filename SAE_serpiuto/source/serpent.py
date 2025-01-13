@@ -45,8 +45,6 @@ def get_nom(serpent:dict)->str:
    ...
 
 
-def get_num_joueur(serpent:dict)->int:
-   """retourne le numéro du joueur associé au serpent
 
 def get_num_joueur(serpent:dict)->int: 
     """retourne le numéro du joueur associé au serpent
@@ -59,7 +57,7 @@ def get_num_joueur(serpent:dict)->int:
    Returns:
        int: le numéro du joueur associé à ce serpent
    """  
-return serpent["numero"]
+    return serpent["numero"]
 
 
 def get_points(serpent:dict)->int:
@@ -71,8 +69,8 @@ def get_points(serpent:dict)->int:
 
     Returns:
         int: le nombre de points du joueur associé à ce serpent
-    """   
-    return serpent["points"]
+    """
+   return serpent["points"]
 
 
 def get_liste_pos(serpent:dict)->list:
@@ -234,10 +232,9 @@ def ajouter_temps_protection(serpent:dict, temps:int)->int:
 
     Returns:
         int: le nombre de tours restant pour ce bonus
-    """   
-    
-    serpent["tps_p"]+=temps
-    return get_temps_protection(serpent)
+    """
+   serpent["tps_p"]+=temps
+   return get_temps_protection(serpent)
 
 
 
