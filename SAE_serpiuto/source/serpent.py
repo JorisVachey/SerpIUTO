@@ -190,7 +190,7 @@ def ajouter_temps_protection(serpent:dict, temps:int)->int: #Erika
     Returns:
         int: le nombre de tours total restant pour ce bonus
     """    
-    return serpent["temps_protec"]+temps
+    return get_temps_protection(serpent)+temps
 
 def ajouter_temps_mange_mur(serpent:dict, temps:int)->int:
     """ajoute du temps supplémentaire pour le bonus mange mur
@@ -265,4 +265,4 @@ def copy_serpent(serpent:dict)->dict: #Erika
     Returns:
         dict: la copie du serpent passé en paramètres
     """ 
-    ...
+    res={}
