@@ -20,7 +20,6 @@ direction_prec='X' # variable indiquant la décision précédente prise par le j
 ### utiles pour prendre vos décisions
 ### Toutes vos fonctions devront être documentées
 ####################################################################
-
 def directions_possibles(l_arene:dict,num_joueur:int)->str:
     """Indique les directions possible pour le joueur num_joueur
         c'est à dire les directions qu'il peut prendre sans se cogner dans
@@ -35,7 +34,26 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
             pouvant être prise par le joueur. Attention il est possible
             qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide
     """    
-
+    res=""
+    ligne_max,col_max=arene.get_dim()
+    pos=arene.get_serpent(l_arene,num_joueur)[-1]
+    if 0<pos[0]<ligne_max and 0<pos[1]<col_max:
+        if not arene.est_mur(l_arene,pos[0]+1,pos[1]):
+            if arene.get_val_boite(l_arene,pos[0]+1,pos[1])==0:
+                res+="E"
+    if 0<pos[0]<ligne_max and 0<pos[1]<col_max:
+        if not arene.est_mur(l_arene,pos[0]-1,pos[1]):
+            if arene.get_val_boite(l_arene,pos[0]-1,pos[1])==0:
+                res+="0"
+    if 0<pos[0]<ligne_max and 0<pos[1]<col_max:
+        if not arene.est_mur(l_arene,pos[0],pos[1]+1):
+            if arene.get_val_boite(l_arene,pos[0],pos[1]+1)==0:
+                res+="N"
+    if 0<pos[0]<ligne_max and 0<pos[1]<col_max:
+        if not arene.est_mur(l_arene,pos[0],pos[1]-1):
+            if arene.get_val_boite(l_arene,pos[0],pos[1]-1)==0:
+                res+="S"
+    return res
 
 def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     """Retourne un dictionnaire indiquant pour chaque direction possibles, 
