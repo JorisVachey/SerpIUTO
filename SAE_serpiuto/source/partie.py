@@ -219,4 +219,5 @@ def copy_partie(partie:dict)->dict:
     Returns:
         dict: la recopie de la partie passée en paramètres
     """
-    ...
+    partie_copie={"nom_partie":get_nom_partie("nom_partie"), "duree_totale":get_duree_totale("duree_totale"),"temps_restant":get_temps_restant("temps_restant"),"arene":get_arene("arene")}
+    return partie_copie
