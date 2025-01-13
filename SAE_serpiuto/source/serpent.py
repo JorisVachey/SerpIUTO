@@ -28,7 +28,7 @@ def Serpent(nom_joueur:str, num_joueur:int,points:int=0,positions:list=None,tps_
    Returns:
        dict: une dictionnaire contenant les informations du serpent
    """   
-   return {"nom":nom_joueur,"numero":num_joueur,"pos":positions,"temps_surp":tps_s,"temps_protec":tps_p,"temps_mange":tps_m,"der_direction":direction}
+   return {"nom_joueur":nom_joueur,"num_joueur":num_joueur,"points":points,"positions":positions,"tps_s":tps_s,"tps_p":tps_p,"tps_m":tps_m,"direction":direction}
 
 
 def get_nom(serpent:dict)->str:
@@ -112,7 +112,7 @@ def get_derniere_direction(serpent:dict)->str:
    Returns:
        str: un des caractère N S E O
    """   
-   return serpent["der_direction"]
+   return serpent["direction"]
 
 
 def get_bonus(serpent:dict)->list:
@@ -167,23 +167,6 @@ def set_derniere_direction(serpent:dict, direction:str):
    ...
 
 
-def to_str(serpent:dict)->str:
-   """produit une chaine de caractères contenant les informations principales d'un serpent sour la forme
-   Joueur 1 -> 143 s:0 m:4 p:0
-   où Joueur 1 est le nom du joueur, après la flèche se trouve le nombre de point
-   puis le temps restant de chaque bonus (supuissante, mange mur et protection)
-
-
-   Args:
-       serpent (dict): le serpent considéré
-
-
-   Returns:
-       str: la chaine de caractères donnant les informations principales d'un serpent
-   """   
-   return f"{serpent["nom"]}"
-
-
 def get_temps_protection(serpent:dict)->int:
    """indique le temps restant pour le bonus protection
 
@@ -224,6 +207,24 @@ def get_temps_surpuissance(serpent:dict)->int:
        int: le nombre de tours restant pour ce bonus
    """  
    ...
+
+
+def to_str(serpent:dict)->str:
+   """produit une chaine de caractères contenant les informations principales d'un serpent sour la forme
+   Joueur 1 -> 143 s:0 m:4 p:0
+   où Joueur 1 est le nom du joueur, après la flèche se trouve le nombre de point
+   puis le temps restant de chaque bonus (supuissante, mange mur et protection)
+
+
+   Args:
+       serpent (dict): le serpent considéré
+
+
+   Returns:
+       str: la chaine de caractères donnant les informations principales d'un serpent
+   """   
+   return f"{get_nom(serpent)} -> {get_points(serpent)} s:{get_temps_surpuissance(serpent)} m:{get_temps_mange_mur(serpent)} p:{get_temps_protection(serpent)}"
+
 
 
 def ajouter_temps_protection(serpent:dict, temps:int)->int:
