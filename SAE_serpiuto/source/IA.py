@@ -81,7 +81,7 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     res={}
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    if calque(l_arene,num_joueur) arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
         res["N"]=[(serp[0]-1,serp[1])]
     
 
