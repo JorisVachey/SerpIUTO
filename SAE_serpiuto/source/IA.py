@@ -123,11 +123,9 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     directions={"N":(-1, 0),"S":(1, 0),"E":(0, -1),"O":(0, +1)}
     for direction,(dx, dy) in directions.items():
         for dist in range(1,dist_max+1):
-            pos=(val_tete+dx,val_tete+dy)
+            pos=(serp+dx,serp+dy)
             if est_sur_arene(l_arene,pos):
-                val=get(calque,pos)
-                if val is not None: 
-                    if 0<arene.get_val_boite(l_arene,pos[0],pos[1])<=val_tete:
+                if 0<arene.get_val_boite(l_arene,pos[0],pos[1])<=val_tete:
                         res[direction].append((dist,arene.get_val_boite(l_arene,pos[0],pos[1]),arene.get_proprietaire(l_arene,pos[0],pos[1])))
     return res
 
