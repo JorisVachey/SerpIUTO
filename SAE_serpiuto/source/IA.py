@@ -49,7 +49,7 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
     if col>=serp[1]-1 >= 0 and (arene.est_mur(serp[0],serp[1]-1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
         res+="E"
 
->>>>>>> f9e13a27f0ffb8ce7b17b71f0c27085c08ee8369
+
 
 def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     """Retourne un dictionnaire indiquant pour chaque direction possibles, 
