@@ -321,8 +321,10 @@ def serpent_from_str(la_chaine, sep=";")->dict:
     Returns:
         dict: Le serpent représenté dans la chaine de caractères
     """    
-    nom_joueur,num_joueur,nb_points,positions,tps_s,tps_p,tps_m,direction=la_chaine.split(sep)
-    return {"nom":nom_joueur, "numero":num_joueur, "points":nb_points, "pos":positions,"temps_surp":tps_s,"temps_protec":tps_p,"temps_mange":tps_m,"der_direction":direction}
+     nom_joueur,num_joueur,nb_points,positions,tps_s,tps_p,tps_m,direction=la_chaine.split(sep)
+    positions=eval(positions)
+    return {"nom":nom_joueur, "numero":int(num_joueur), "points":int(nb_points), "pos":positions,"temps_surp":int(tps_s),
+            "temps_protec":int(tps_p),"temps_mange":int(tps_m),"der_direction":direction}
 
 def copy_serpent(serpent:dict)->dict: 
     """fait une copie du serpent passer en paramètres
