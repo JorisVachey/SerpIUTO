@@ -78,59 +78,56 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             (distance,val_objet,prop) où distance indique le nombre de cases jusqu'à l'objet et id_objet
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
-    res={}
-    serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
-    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    if arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
-        res["N"]=[(serp[0]-1,serp[1])]
+    res = {"N": [], "S": [], "E": [], "O": []}
+    serpent = arene.get_serpent(l_arene, num_joueur)[0]
+    tete = serpent["pos"][0]
+    calque = calque(l_arene, num_joueur)
+
+    directions = {
+        "N": (-1, 0),
+        "S": (1, 0),
+        "E": (0, 1),
+        "O": (0, -1)
+    }
+
+    for direction,(dx, dy) in directions.items():
+        for dist in range(1,dist_max+1):
+            pos=(tete[0]+dx*dist,tete[1]+dy*dist)
+            if est_sur_arene(l_arene,pos):
+                val=get(calque,pos)
+                if val is not None:
+                    obj=arene.get_objet(l_arene, pos)
+                    if obj:
+                        res[direction].append((dist, obj["valeur"], obj["proprietaire"]))
+                    elif arene.est_boite(l_arene, pos):
+                        boite = arene.get_boite(l_arene, pos)
+                        res[direction].append((dist, boite["valeur"], boite["proprietaire"]))
+
+    return res
     
 
     return res
 
-# def calque(l_arene,num_joueur:int):
-#     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
-#     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-#     lgn,col=arene.get_dim(l_arene)
-#     calque=matrice.Matrice(lgn,col)
-#     i=0
-#     fin=(lgn-1,col-1)
-#     charge=True
-#     while 0<=arene.get_val_boite(l_arene,fin[0],fin[1])<=val_tete or charge is True:
-#         for ligne in range(lgn):
-#             for colonne in range(col):
-#                 pos=(ligne,colonne)
-#                 voisin_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
-#                 for voisin in voisin_calque:
-#                     if est_sur_arene(l_arene,voisin) and arene.get_val_boite(l_arene,voisin[0],voisin[1])<=val_tete and not arene.est_mur(l_arene,pos[0],pos[1]):
-#                         matrice.set_val(calque,pos[0],pos[1],arene.get_val_boite(l_arene,pos[0],pos[1]))
-#                         charge=True
-#                     else:
-#                         charge=False
-#         i+=1
-#     return calque
-
 def get(l_arene,pos):
     if est_sur_arene(l_arene,pos):
-        return arene.get_val_boite(l_arene,pos[0],pos[1])
+        return matrice.get_val(l_arene["matrice"], pos[0], pos[1])
 
 def calque(l_arene,num_joueur:int):
-    serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     lgn,col=arene.get_dim(l_arene)
     calque=matrice.Matrice(lgn,col)
     i=0
     fin=(lgn-1,col-1)
     charge=True
     while get(l_arene,fin) is None or charge is True :
+        charge=False
         for ligne in range(lgn):
             for colonne in range(col):
                 pos=(ligne,colonne)
                 voisins_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
                 for voisin in voisins_calque:
-                    if get(calque,voisin)==1 and get(calque,pos) and not arene.est_mur(l_arene,pos):
+                    if est_sur_arene(l_arene, voisin) and get(calque, voisin) == i and get(calque, pos) is None and not arene.est_mur(l_arene, pos[0], pos[1]):
                         matrice.set_val(calque,pos[0],pos[1],i+1)
                         charge=True
-                    else:
-                        charge=False
         i+=1
     return calque
 
