@@ -65,9 +65,47 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             (distance,val_objet,prop) où distance indique le nombre de cases jusqu'à l'objet et id_objet
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
-    {1:{(1,1),(1,2),(1,3)},2:{(2,1),(2,2)}}
+    directions = directions_possibles(l_arene, num_joueur)
+    serp = [arene.get_serpent[l_arene, num_joueur][0], arene.get_serpent[l_arene, num_joueur][1]]
+    voisinage = {direction: [] for direction in directions}
+    queue = [(serp[0], serp[1], 0)]
+    visited = set()
+
+    while queue:
+        x, y, dist = queue.pop(0)
+        if dist > dist_max:
+            continue
+        if (x, y) in visited:
+            continue
+        visited.add((x, y))
+
+        if dist > 0:
+            val_objet = arene.get_val_boite(l_arene, x, y)
+            prop = arene.get_proprietaire_boite(l_arene, x, y)
+            for direction in directions:
+                voisinage[direction].append((dist, val_objet, prop))
+
+        for dx, dy, direction in [(-1, 0, 'N'), (1, 0, 'S'), (0, -1, 'E'), (0, 1, 'O')]:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < arene.get_dim(arene)[0] and 0 <= ny < arene.get_dim(arene)[1]:
+                if not arene.est_mur(nx, ny):
+                    queue.append((nx, ny, dist + 1))
+
+    return voisinage
 
 
+def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
+    """Renvoie le choix de la cellule à récupérer selon les points, la distance, la distance avec d'autres serpents etc
+
+    Args:
+        l_arene (dict): l'arène considérée
+        num_joueur (int): le numéro du joueur considéré
+        dist_max (int): le rayon de la zone à analyser
+
+    Returns:
+        tuple: la cellule qui nous intéresse le plus
+    """  
+    ...
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
     return 'N'
