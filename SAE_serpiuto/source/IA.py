@@ -65,6 +65,14 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
         res+="E"
 
 def get(l_arene,pos):
+    """Retourne la valeur de la case à la position donnée
+        Args:
+            l_arene (dict): l'arène considérée
+            pos (tuple): la position à tester
+            
+        Returns:
+            int: la valeur de la case à la position donnée ou None si la position n'est pas sur l'arène
+    """
     if est_sur_arene(l_arene,pos):
         return matrice.get_val(l_arene["matrice"], pos[0], pos[1])
 
