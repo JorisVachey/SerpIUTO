@@ -114,7 +114,7 @@ def set_plan(arene:dict,plan:str)->bool:
             return False
     return True
 
-def get_dim(arene:dict)->[int,int]:
+def get_dim(arene:dict)->list:
     """return les dimensions de l'arène sous la forme (nb_lignes,nb_colonnes)
 
     Args:
@@ -858,4 +858,5 @@ def copy_arene(arene:dict)->dict:
     Returns:
         dict: la copie de l'arène passée en paramètre
     """
-    ...
+    copie_arene= Arene(arene["nb_lig"],arene["nb_col"],arene["noms_participants"])
+    return copie_arene
