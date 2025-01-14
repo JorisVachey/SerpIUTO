@@ -81,34 +81,58 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     res={}
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    if  and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if calque(l_arene,num_joueur) arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
         res["N"]=[(serp[0]-1,serp[1])]
     
 
     return res
 
+# def calque(l_arene,num_joueur:int):
+#     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
+#     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
+#     lgn,col=arene.get_dim(l_arene)
+#     calque=matrice.Matrice(lgn,col)
+#     i=0
+#     fin=(lgn-1,col-1)
+#     charge=True
+#     while 0<=arene.get_val_boite(l_arene,fin[0],fin[1])<=val_tete or charge is True:
+#         for ligne in range(lgn):
+#             for colonne in range(col):
+#                 pos=(ligne,colonne)
+#                 voisin_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
+#                 for voisin in voisin_calque:
+#                     if est_sur_arene(l_arene,voisin) and arene.get_val_boite(l_arene,voisin[0],voisin[1])<=val_tete and not arene.est_mur(l_arene,pos[0],pos[1]):
+#                         matrice.set_val(calque,pos[0],pos[1],arene.get_val_boite(l_arene,pos[0],pos[1]))
+#                         charge=True
+#                     else:
+#                         charge=False
+#         i+=1
+#     return calque
+
+def get(l_arene,pos):
+    if est_sur_arene(l_arene,pos):
+        return arene.get_val_boite(l_arene,pos[0],pos[1])
+
 def calque(l_arene,num_joueur:int):
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
-    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     lgn,col=arene.get_dim(l_arene)
     calque=matrice.Matrice(lgn,col)
     i=0
     fin=(lgn-1,col-1)
     charge=True
-    while 0<=arene.get_val_boite(l_arene,fin[0],fin[1])<=val_tete or charge is True:
+    while get(l_arene,fin) is None or charge is True :
         for ligne in range(lgn):
             for colonne in range(col):
                 pos=(ligne,colonne)
-                voisin_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
-                for voisin in voisin_calque:
-                    if est_sur_arene(l_arene,voisin) and arene.get_val_boite(l_arene,voisin[0],voisin[1])<=val_tete and not arene.est_mur(l_arene,pos[0],pos[1]):
+                voisins_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
+                for voisin in voisins_calque:
+                    if get(calque,voisin)==1 and get(calque,pos) and not arene.est_mur(l_arene,pos):
                         matrice.set_val(calque,pos[0],pos[1],i+1)
                         charge=True
                     else:
                         charge=False
         i+=1
     return calque
-
 
 
 
