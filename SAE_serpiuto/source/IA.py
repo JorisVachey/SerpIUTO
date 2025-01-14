@@ -40,13 +40,13 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     mat=arene["matrice"]
     lgn,col=arene.get_dim(arene)
-    if 0<=serp[0]-1 <= lgn and arene.est_mur(serp[1],serp[0]-1)!=True and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if 0<=serp[0]-1 <= lgn and (arene.est_mur(serp[1],serp[0]-1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
         res+="N"
-    if col>=serp[1]+1 >= 0 and arene.est_mur(serp[0],serp[1]+1)!=True and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
+    if col>=serp[1]+1 >= 0 and (arene.est_mur(serp[0],serp[1]+1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0): 
         res+="O"
-    if 0<=serp[0]+1 <= lgn and arene.est_mur(serp[1],serp[0]+1)!=True and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
+    if 0<=serp[0]+1 <= lgn and (arene.est_mur(serp[1],serp[0]+1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
         res+="S"
-    if col>=serp[1]-1 >= 0 and arene.est_mur(serp[0],serp[1]-1)!=True and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
+    if col>=serp[1]-1 >= 0 and (arene.est_mur(serp[0],serp[1]-1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
         res+="E"
 
 
@@ -64,7 +64,7 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             (distance,val_objet,prop) où distance indique le nombre de cases jusqu'à l'objet et id_objet
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
-    ...
+    {1:{(1,1),(1,2),(1,3)},2:{(2,1),(2,2)}}
 
 
 
