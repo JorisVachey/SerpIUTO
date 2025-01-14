@@ -35,25 +35,18 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
             qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide
     """    
     res=""
-    ligne_max,col_max=arene.get_dim()
-    pos=arene.get_serpent(l_arene,num_joueur)[-1]
-    if 0<pos[0]<=ligne_max-1 and 0<pos[1]<=col_max-1:
-        if not arene.est_mur(l_arene,pos[0],pos[1]+1):
-            if arene.get_val_boite(l_arene,pos[0],pos[1]+1)==0:
-                res+="N"
-    if 0<pos[0]<=ligne_max-1 and 0<pos[1]<=col_max-1:
-        if not arene.est_mur(l_arene,pos[0]-1,pos[1]):
-            if arene.get_val_boite(l_arene,pos[0]-1,pos[1])==0:
-                res+="0" 
-    if 0<pos[0]<=ligne_max-1 and 0<pos[1]<=col_max-1:
-        if not arene.est_mur(l_arene,pos[0],pos[1]-1):
-            if arene.get_val_boite(l_arene,pos[0],pos[1]-1)==0:
-                res+="S"                       
-    if 0<pos[0]<=ligne_max-1 and 0<pos[1]<=col_max-1:
-        if not arene.est_mur(l_arene,pos[0]+1,pos[1]):
-            if arene.get_val_boite(l_arene,pos[0]+1,pos[1])==0:
-                res+="E"
-    return res
+    serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
+    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
+    mat=arene["matrice"]
+    lgn,col=arene.get_dim(arene)
+    if 0<=serp[0]-1 <= lgn and arene.est_mur(serp[1],serp[0]-1)!=True and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+        res+="N"
+    if col>=serp[1]+1 >= 0 and arene.est_mur(serp[0],serp[1]+1)!=True and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
+        res+="O"
+    if 0<=serp[0]+1 <= lgn and arene.est_mur(serp[1],serp[0]+1)!=True and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
+        res+="S"
+    if col>=serp[1]-1 >= 0 and arene.est_mur(serp[0],serp[1]-1)!=True and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
+        res+="E"
 
 def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     """Retourne un dictionnaire indiquant pour chaque direction possibles, 
