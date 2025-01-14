@@ -95,10 +95,10 @@ def est_sur_arene(l_arene,pos):
         return True
     return False
 
-
 def calque(l_arene,num_joueur:int):
     res={}
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
+    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     lgn,col=arene.get_dim(l_arene)
     calque=matrice.Matrice(lgn,col)
 
@@ -106,7 +106,19 @@ def calque(l_arene,num_joueur:int):
     fin=(lgn-1,col-1)
     charge=True
 
-    while arene.get_val_boite(l_arene,)==0
+    while 0<=arene.get_val_boite(l_arene,fin[0],fin[1])<=val_tete or charge is True:
+        for ligne in range(lgn):
+            for colonne in range(col):
+                pos=(ligne,colonne)
+                voisin_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
+                for voisin in voisin_calque:
+                    if est_sur_arene(l_arene,voisin) and arene.get_val_boite(l_arene,voisin[0],voisin[1])<=val_tete and not arene.est_mur(l_arene,pos[0],pos[1]):
+                        matrice.set_val(calque,voisin[0],voisin[1],i+1)
+                        charge=True
+                    else:
+                        charge=False
+        i+=1
+    return calque
 
 
 
