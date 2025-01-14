@@ -21,6 +21,22 @@ direction_prec='X' # variable indiquant la décision précédente prise par le j
 ### utiles pour prendre vos décisions
 ### Toutes vos fonctions devront être documentées
 ####################################################################
+
+def est_sur_arene(l_arene,pos):
+    """Fonction qui indique si la position pos est sur l'arène
+        
+        Args:
+            l_arene (dict): l'arène considérée
+            pos (tuple): la position à tester
+
+        Returns:
+            (bool): True si la position est sur l'arène, False sinon
+    """
+    lgn,col=arene.get_dim(l_arene)
+    if 0<=pos[0]<lgn and 0<=pos[1]<col:
+        return True
+    return False
+
 def directions_possibles(l_arene:dict,num_joueur:int)->str:
     """Indique les directions possible pour le joueur num_joueur
         c'est à dire les directions qu'il peut prendre sans se cogner dans
@@ -63,49 +79,22 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
     res={}
-    # dico_distances={}
-    # dist=dist_max
-    # while dist_max>0:
-    #     dico_distances[dist]=set()
-    #     dico_distances[dist].add((),())
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
-    Nmax=serp[1]+dist_max
-    Omax=serp[0]-dist_max
-    Smax=serp[1]-dist_max
-    Emax=serp[0]+dist_max
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    if 0<=serp[0]-1<=Nmax and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if  and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
         res["N"]=[(serp[0]-1,serp[1])]
     
 
     return res
 
-def est_sur_arene(l_arene,pos):
-    """Fonction qui indique si la position pos est sur l'arène
-        
-        Args:
-            l_arene (dict): l'arène considérée
-            pos (tuple): la position à tester
-
-        Returns:
-            (bool): True si la position est sur l'arène, False sinon
-    """
-    lgn,col=arene.get_dim(l_arene)
-    if 0<=pos[0]<lgn and 0<=pos[1]<col:
-        return True
-    return False
-
 def calque(l_arene,num_joueur:int):
-    res={}
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     lgn,col=arene.get_dim(l_arene)
     calque=matrice.Matrice(lgn,col)
-
     i=0
     fin=(lgn-1,col-1)
     charge=True
-
     while 0<=arene.get_val_boite(l_arene,fin[0],fin[1])<=val_tete or charge is True:
         for ligne in range(lgn):
             for colonne in range(col):
@@ -113,7 +102,7 @@ def calque(l_arene,num_joueur:int):
                 voisin_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
                 for voisin in voisin_calque:
                     if est_sur_arene(l_arene,voisin) and arene.get_val_boite(l_arene,voisin[0],voisin[1])<=val_tete and not arene.est_mur(l_arene,pos[0],pos[1]):
-                        matrice.set_val(calque,voisin[0],voisin[1],i+1)
+                        matrice.set_val(calque,pos[0],pos[1],i+1)
                         charge=True
                     else:
                         charge=False
