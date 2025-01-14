@@ -37,15 +37,14 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
     res=""
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    mat=arene["matrice"]
     lgn,col=arene.get_dim(arene)
-    if 0<=serp[0]-1 <= lgn and arene.est_mur(serp[1],serp[0]-1)!=True and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if 0<=serp[0]-1 <= lgn and not arene.est_mur(serp[1],serp[0]-1) and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
         res+="N"
-    if col>=serp[1]+1 >= 0 and arene.est_mur(serp[0],serp[1]+1)!=True and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
+    if col>=serp[1]+1 >= 0 and not arene.est_mur(serp[0],serp[1]+1) and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
         res+="O"
-    if 0<=serp[0]+1 <= lgn and arene.est_mur(serp[1],serp[0]+1)!=True and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
+    if 0<=serp[0]+1 <= lgn and not arene.est_mur(serp[1],serp[0]+1) and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
         res+="S"
-    if col>=serp[1]-1 >= 0 and arene.est_mur(serp[0],serp[1]-1)!=True and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
+    if col>=serp[1]-1 >= 0 and not arene.est_mur(serp[0],serp[1]-1) and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
         res+="E"
 
 def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
@@ -62,7 +61,23 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             (distance,val_objet,prop) où distance indique le nombre de cases jusqu'à l'objet et id_objet
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
-    ...
+    res={}
+    # dico_distances={}
+    # dist=dist_max
+    # while dist_max>0:
+    #     dico_distances[dist]=set()
+    #     dico_distances[dist].add((),())
+    serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
+    Nmax=serp[1]+dist_max
+    Omax=serp[0]-dist_max
+    Smax=serp[1]-dist_max
+    Emax=serp[0]+dist_max
+    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
+    if 0<=serp[0]-1<=Nmax and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+        res["N"]=[(serp[0]-1,serp[1])]
+    
+
+    return res
 
 
 
