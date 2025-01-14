@@ -36,9 +36,6 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
             qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide
     """    
     res=""
-<<<<<<< HEAD
-    
-=======
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     mat=arene["matrice"]
