@@ -13,6 +13,7 @@ import client
 import random
 import arene
 import serpent
+import matrice
 direction_prec='X' # variable indiquant la décision précédente prise par le joueur. A mettre à jour soi-même
 
 ####################################################################
@@ -38,7 +39,7 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
     serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     lgn,col=arene.get_dim(arene)
-    if 0<=serp[0]-1 <= lgn and not arene.est_mur(serp[1],serp[0]-1) and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if 0<=serp[0]-1 <= lgn and not arene.est_mur(serp[1],serp[0]-1)  and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
         res+="N"
     if col>=serp[1]+1 >= 0 and not arene.est_mur(serp[0],serp[1]+1) and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
         res+="O"
@@ -79,10 +80,40 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
 
     return res
 
+def est_sur_arene(l_arene,pos):
+    """Fonction qui indique si la position pos est sur l'arène
+        
+        Args:
+            l_arene (dict): l'arène considérée
+            pos (tuple): la position à tester
+
+        Returns:
+            (bool): True si la position est sur l'arène, False sinon
+    """
+    lgn,col=arene.get_dim(l_arene)
+    if 0<=pos[0]<lgn and 0<=pos[1]<col:
+        return True
+    return False
+
+
+def calque(l_arene,num_joueur:int):
+    res={}
+    serp=[arene.get_serpent[l_arene,num_joueur][0],arene.get_serpent[l_arene,num_joueur][1]]
+    lgn,col=arene.get_dim(l_arene)
+    calque=matrice.Matrice(lgn,col)
+
+    i=0
+    fin=(lgn-1,col-1)
+    charge=True
+
+    while arene.get_val_boite(l_arene,)==0
+
+
 
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
     return 'N'
+
 def mon_IA(num_joueur:int, la_partie:dict)->str: 
     """Fonction qui va prendre la decision du prochain coup pour le joueur de numéro ma_couleur
 
