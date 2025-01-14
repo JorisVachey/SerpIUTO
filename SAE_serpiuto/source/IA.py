@@ -81,7 +81,6 @@ def calque(l_arene,num_joueur:int):
     calque=matrice.Matrice(lgn,col)
     i=0
     fin=(lgn-1,col-1)
-    charge=True
     while get(l_arene,fin) is None or charge is True :
         charge=False
         for ligne in range(lgn):
