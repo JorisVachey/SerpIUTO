@@ -118,21 +118,17 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     """
     res={"N":[],"S":[],"E":[],"O":[]}
     serp=arene.get_serpent(l_arene, num_joueur)[0]
-    tete=serp["pos"][0]
+    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     calque=calque(l_arene, num_joueur)
     directions={"N":(-1, 0),"S":(1, 0),"E":(0, -1),"O":(0, +1)}
     for direction,(dx, dy) in directions.items():
         for dist in range(1,dist_max+1):
-            pos=(tete[0]+dx*dist,tete[1]+dy*dist)
+            pos=(val_tete+dx,val_tete+dy)
             if est_sur_arene(l_arene,pos):
                 val=get(calque,pos)
-                if val is not None:
-                    obj=arene.get_objet(l_arene, pos)
-                    if obj:
-                        res[direction].append((dist,obj["valeur"],obj["proprietaire"]))
-                    elif arene.est_boite(l_arene,pos):
-                        boite=arene.get_boite(l_arene,pos)
-                        res[direction].append((dist,boite["valeur"],boite["proprietaire"]))
+                if val is not None: 
+                    if 0<arene.get_val_boite(l_arene,pos[0],pos[1])<=val_tete:
+                        res[direction].append((dist,arene.get_val_boite(l_arene,pos[0],pos[1]),arene.get_proprietaire(l_arene,pos[0],pos[1])))
     return res
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
