@@ -51,20 +51,21 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
             pouvant être prise par le joueur. Attention il est possible
             qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide
     """    
-    res=""
+    res=[]
     serp=arene.get_serpent(l_arene,num_joueur)[0]
-    x,y=serp[0],serp[1]    
+    x,y=serp[0],serp[1]
     tete=arene.get_val_boite(l_arene,x,y)
     lgn,col=arene.get_dim(l_arene)
-    if 0<=x-1 <= lgn and not (arene.est_mur(l_arene,x-1,y) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x-1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
-        res+="N"
-    if col>=y-1 >= 0 and not (arene.est_mur(l_arene,x,y-1) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x,y-1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0): 
-        res+="O"
-    if 0<=x+1 <= lgn and not (arene.est_mur(l_arene,x+1,y) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x+1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
-        res+="S"
-    if col>=y+1 >= 0 and not (arene.est_mur(l_arene,x,y+1) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x,y+1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
-        res+="E"
-    return res
+    if 0<=x-1<lgn and (not arene.est_mur(l_arene,x-1,y) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x-1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
+        res+=["N"]
+    if 0<=y-1<col and (not arene.est_mur(l_arene,x,y-1) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x,y-1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1): 
+        res+=["O"]
+    if 0<=x+1<lgn and (not arene.est_mur(l_arene,x+1,y) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x+1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
+        res+=["S"]
+    if col>y+1>=0 and (not arene.est_mur(l_arene,x,y+1) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x,y+1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
+        res+=["E"]
+    random.shuffle(res)
+    return "".join(res)
 
 def get(l_arene,pos):
     """Retourne la valeur de la case à la position donnée
@@ -171,9 +172,16 @@ def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
     """
     choix_direction=None
     directions=objets_voisinage(l_arene,num_joueur,dist_max)
+    compteur2=0
+    choix_case=0
     for x,y in directions.items():
-        if choix_direction is None or y[1]>choix_direction:
-            choix_direction=x
+        compteur = len(directions[x])-1
+        while compteur>=0 or compteur2<20:
+            if choix_direction is None or y[compteur][1]>directions[choix_direction][choix_case][1]:
+                choix_direction=x
+                choix_case=compteur
+            compteur-=1
+            compteur2+=1
     return choix_direction
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
@@ -186,13 +194,25 @@ def mon_IA2(num_joueur:int, la_partie:dict)->str:
     Returns:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
-    direction=random.choice("NOSE")
-    direction_prec=direction
+    direction=random.choice("NSEO")
+    global direction_prec
+    dir_pos=directions_possibles(partie.get_arene(la_partie),num_joueur)
+    print(f'les directions possibles pour {num_joueur}:{dir_pos}')
     dir_pos=choix_box(partie.get_arene(la_partie),num_joueur,10)
-    if dir_pos=='':
-        direction=random.choice('NOSE')
+    print(f'le joueur{num_joueur} a pris {dir_pos}')
+    if not dir_pos:
+        direction = direction_prec  # Continue dans la dernière direction viable
+        if direction_prec=="N":
+            direction="S"
+        elif direction_prec=="S":
+            direction="N"
+        elif direction_prec=="E":
+            direction="O"
+        elif direction_prec=="O":
+            direction="E"
     else:
-        direction=random.choice(dir_pos)
+        direction = random.choice(dir_pos)
+    direction_prec = direction
     return direction
 
 def mon_IA(num_joueur:int, la_partie:dict)->str:
