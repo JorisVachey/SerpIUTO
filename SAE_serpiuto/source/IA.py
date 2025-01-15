@@ -51,18 +51,36 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
             pouvant être prise par le joueur. Attention il est possible
             qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide
     """    
-    res=""
-    serp=arene.get_serpent(l_arene,num_joueur)
-    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    lgn,col=arene.get_dim(l_arene) 
-    if 0<=serp[0]-1 <= lgn-1 and not arene.est_mur(serp[0]-1,serp[1]) and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
-        res+="N"
-    if col-1>=serp[1]+1 >= 0 and not arene.est_mur(serp[0],serp[1]+1) and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
-        res+="O"
-    if 0<=serp[0]+1 <= lgn-1 and not arene.est_mur(serp[0]+1,serp[1]) and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
-        res+="S"
-    if col-1>=serp[1]-1 >= 0 and not arene.est_mur(serp[0],serp[1]-1) and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
-        res+="E"
+    # res=""
+    # serp=arene.get_serpent(l_arene,num_joueur)
+    # val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
+    # lgn,col=arene.get_dim(l_arene) 
+    # if 0<=serp[0]-1 <= lgn-1 and not arene.est_mur(serp[0]-1,serp[1]) and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    #     res+="N"
+    # if col-1>=serp[1]+1 >= 0 and not arene.est_mur(serp[0],serp[1]+1) and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
+    #     res+="O"
+    # if 0<=serp[0]+1 <= lgn-1 and not arene.est_mur(serp[0]+1,serp[1]) and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
+    #     res+="S"
+    # if col-1>=serp[1]-1 >= 0 and not arene.est_mur(serp[0],serp[1]-1) and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
+    #     res+="E"
+    # return res
+    res = ""
+    serp = arene.get_serpent(l_arene, num_joueur)
+    tete = serp["pos"][0]
+    val_tete = arene.get_val_boite(l_arene, tete[0], tete[1])
+    lgn, col = arene.get_dim(l_arene)
+
+    directions = {
+        "N": (tete[0] - 1, tete[1]),
+        "O": (tete[0], tete[1] - 1),
+        "S": (tete[0] + 1, tete[1]),
+        "E": (tete[0], tete[1] + 1)
+    }
+
+    for direction, (x, y) in directions.items():
+        if 0 <= x < lgn and 0 <= y < col and not arene.est_mur(l_arene, x, y) and arene.get_val_boite(l_arene, x, y) <= val_tete:
+            res += direction
+
     return res
 
 def get(l_arene,pos):
