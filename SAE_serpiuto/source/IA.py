@@ -172,16 +172,16 @@ def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
     """
     choix_direction=None
     directions=objets_voisinage(l_arene,num_joueur,dist_max)
-    compteur2=0
-    choix_case=0
+    score_ch=0
     for x,y in directions.items():
-        compteur = len(directions[x])-1
-        while compteur>=0 or compteur2<20:
-            if choix_direction is None or y[compteur][1]>directions[choix_direction][choix_case][1]:
+        compteur=0
+        score=0
+        while compteur<len(y):
+            score+=y[compteur][1]/y[compteur][0]
+            if choix_direction is None or score>score_ch:
                 choix_direction=x
-                choix_case=compteur
-            compteur-=1
-            compteur2+=1
+                score_ch=score
+            compteur+=1
     return choix_direction
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
