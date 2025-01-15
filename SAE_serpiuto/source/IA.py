@@ -77,7 +77,7 @@ def get(l_arene,pos):
     if est_sur_arene(l_arene,pos):
         return matrice.get_val(l_arene["matrice"], pos[0], pos[1])
 
-def calque(l_arene,num_joueur:int):
+def fabriquer_calque(l_arene,num_joueur:int):
     """Fabrique le calcque de l'arene en utilisant l'inondation
     Args:
         l_arene (dict): l'arène considérée
@@ -117,45 +117,45 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             (distance,val_objet,prop) où distance indique le nombre de cases jusqu'à l'objet et id_objet
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
-    # directions = directions_possibles(l_arene, num_joueur)
-    # serp = [arene.get_serpent[l_arene, num_joueur][0], arene.get_serpent[l_arene, num_joueur][1]]
-    # voisinage = {direction: [] for direction in directions}
-    # queue = [(x, y, 0)]
-    # visited = set()
+    directions = directions_possibles(l_arene, num_joueur)
+    serp = [arene.get_serpent[l_arene, num_joueur][0], arene.get_serpent[l_arene, num_joueur][1]]
+    voisinage = {direction: [] for direction in directions}
+    queue = [(x, y, 0)]
+    visited = set()
 
-    # while queue:
-    #     x, y, dist = queue.pop(0)
-    #     if dist > dist_max:
-    #         continue
-    #     if (x, y) in visited:
-    #         continue
-    #     visited.add((x, y))
+    while queue:
+        x, y, dist = queue.pop(0)
+        if dist > dist_max:
+            continue
+        if (x, y) in visited:
+            continue
+        visited.add((x, y))
 
-    #     if dist > 0:
-    #         val_objet = arene.get_val_boite(l_arene, x, y)
-    #         prop = arene.get_proprietaire_boite(l_arene, x, y)
-    #         for direction in directions:
-    #             voisinage[direction].append((dist, val_objet, prop))
+        if dist > 0:
+            val_objet = arene.get_val_boite(l_arene, x, y)
+            prop = arene.get_proprietaire_boite(l_arene, x, y)
+            for direction in directions:
+                voisinage[direction].append((dist, val_objet, prop))
 
-    #     for dx, dy, direction in [(-1, 0, 'N'), (1, 0, 'S'), (0, -1, 'E'), (0, 1, 'O')]:
-    #         nx, ny = x + dx, y + dy
-    #         if 0 <= nx < arene.get_dim(arene)[0] and 0 <= ny < arene.get_dim(arene)[1]:
-    #             if not arene.est_mur(nx, ny):
-    #                 queue.append((nx, ny, dist + 1))
+        for dx, dy, direction in [(-1, 0, 'N'), (1, 0, 'S'), (0, -1, 'E'), (0, 1, 'O')]:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < arene.get_dim(arene)[0] and 0 <= ny < arene.get_dim(arene)[1]:
+                if not arene.est_mur(nx, ny):
+                    queue.append((nx, ny, dist + 1))
 
-    # return voisinage
-    res={"N":[],"S":[],"E":[],"O":[]}
-    serp=arene.get_serpent(l_arene, num_joueur)[0]
-    val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
-    calque=calque(l_arene, num_joueur)
-    directions={"N":(-1, 0),"S":(1, 0),"E":(0, -1),"O":(0, +1)}
-    for direction,(dx, dy) in directions.items():
-        for dist in range(1,dist_max+1):
-            pos=(serp+dx,serp+dy)
-            if est_sur_arene(l_arene,pos):
-                if 0<arene.get_val_boite(l_arene,pos[0],pos[1])<=val_tete:
-                        res[direction].append((dist,arene.get_val_boite(l_arene,pos[0],pos[1]),arene.get_proprietaire(l_arene,pos[0],pos[1])))
-    return res
+    return voisinage
+    # res={"N":[],"S":[],"E":[],"O":[]}
+    # serp=arene.get_serpent(l_arene, num_joueur)[0]
+    # val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
+    # calque=fabriquer_calque(l_arene, num_joueur)
+    # directions={"N":(-1, 0),"S":(1, 0),"E":(0, -1),"O":(0, +1)}
+    # for direction,(dx, dy) in directions.items():
+    #     for dist in range(1,dist_max+1):
+    #         pos=(serp+dx,serp+dy)
+    #         if est_sur_arene(l_arene,pos):
+    #             if 0<arene.get_val_boite(l_arene,pos[0],pos[1])<=val_tete:
+    #                     res[direction].append((dist,arene.get_val_boite(l_arene,pos[0],pos[1]),arene.get_proprietaire(l_arene,pos[0],pos[1])))
+    # return res
 
 def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
     """Renvoie le choix de la cellule à récupérer selon les points, la distance, la distance avec d'autres serpents etc
@@ -186,14 +186,14 @@ def mon_IA2(num_joueur:int, la_partie:dict)->str:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
     direction=random.choice("NSEO")
-    direction_prec=direction #La décision prise sera la direction précédente le prochain tour
+    direction_prec=direction
     dir_pos=choix_box(partie.get_arene(la_partie),num_joueur,10)
     if dir_pos=='':
         direction=random.choice('NOSE')
     else:
         direction=random.choice(dir_pos)
 
-def mon_IA(num_joueur:int, la_partie:dict)->str: 
+def mon_IA(num_joueur:int, la_partie:dict)->str:
     """Fonction qui va prendre la decision du prochain coup pour le joueur de numéro ma_couleur
 
     Args:
