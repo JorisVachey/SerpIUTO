@@ -33,24 +33,24 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
     Returns:
         str: une chaine composée de NOSE qui indique les directions
             pouvant être prise par le joueur. Attention il est possible
-            qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide
-    """    
-    res=""
+            qu'aucune direction ne soit possible donc la fonction peut retourner la chaine vide   """
+    res=[]
     serp=arene.get_serpent(l_arene,num_joueur)[0]
 
-    x,y=serp[0],serp[1]    
+    x,y=serp[0],serp[1]
     tete=arene.get_val_boite(l_arene,x,y)
     lgn,col=arene.get_dim(l_arene)
-    if 0<=x-1 <= lgn and (arene.est_mur(l_arene,x-1,y)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x-1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
-        res+="N"
-    if col>=y+1 >= 0 and (arene.est_mur(l_arene,x,y+1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x,y+1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0): 
-        res+="O"
-    if 0<=x+1 <= lgn and (arene.est_mur(l_arene,x+1,y)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x+1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
-        res+="S"
-    if col>=y-1 >= 0 and (arene.est_mur(l_arene,x,y-1)!=True or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>0) and (arene.get_val_boite(l_arene,x,y-1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>0):
-        res+="E"
-
-
+    if 0<=x-1<lgn and (not arene.est_mur(l_arene,x-1,y) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x-1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
+        res+=["N"]
+    if 0<=y-1<col and (not arene.est_mur(l_arene,x,y-1) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x,y-1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1): 
+        res+=["O"]
+    if 0<=x+1<lgn and (not arene.est_mur(l_arene,x+1,y) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x+1,y)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
+        res+=["S"]
+    if col>y+1>=0 and (not arene.est_mur(l_arene,x,y+1) or serpent.get_temps_mange_mur(l_arene["serpents"][num_joueur-1])>1) and (arene.get_val_boite(l_arene,x,y+1)<=tete or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
+        res+=["E"]
+    random.shuffle(res)
+    return "".join(res)
+    
 
 def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     """Retourne un dictionnaire indiquant pour chaque direction possibles, 
@@ -67,7 +67,8 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             val_obj indique la valeur de l'objet ou de la boite et prop indique le propriétaire de la boite
     """
     directions = directions_possibles(l_arene, num_joueur)
-    serp = [arene.get_serpent[l_arene, num_joueur][0], arene.get_serpent[l_arene, num_joueur][1]]
+    serp = arene.get_serpent(l_arene,num_joueur)[0]
+    x,y=serp[0],serp[1]
     voisinage = {direction: [] for direction in directions}
     queue = [(x, y, 0)]
     visited = set()
@@ -82,15 +83,15 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
 
         if dist > 0:
             val_objet = arene.get_val_boite(l_arene, x, y)
-            prop = arene.get_proprietaire_boite(l_arene, x, y)
+            prop = arene.get_proprietaire(l_arene, x, y)
             for direction in directions:
                 voisinage[direction].append((dist, val_objet, prop))
 
         for dx, dy, direction in [(-1, 0, 'N'), (1, 0, 'S'), (0, -1, 'E'), (0, 1, 'O')]:
             nx, ny = x + dx, y + dy
-            if 0 <= nx < arene.get_dim(arene)[0] and 0 <= ny < arene.get_dim(arene)[1]:
-                if not arene.est_mur(nx, ny):
-                    queue.append((nx, ny, dist + 1))
+            lgn, col = arene.get_dim(l_arene)
+            if 0 <= nx < lgn and 0 <= ny < col and not arene.est_mur(l_arene, nx, ny):
+                queue.append((nx, ny, dist + 1))
 
     return voisinage
 
@@ -108,9 +109,16 @@ def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
     """  
     choix_direction=None
     directions=objets_voisinage(l_arene,num_joueur,dist_max)
+    compteur2=0
+    choix_case=0
     for x,y in directions.items():
-        if choix_direction is None or y[1]>choix_direction:
-            choix_direction=x
+        compteur = len(directions[x])-1
+        while compteur>=0 or compteur2<20:
+            if choix_direction is None or y[compteur][1]>directions[choix_direction][choix_case][1]:
+                choix_direction=x
+                choix_case=compteur
+            compteur-=1
+            compteur2+=1
     return choix_direction
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
@@ -124,12 +132,24 @@ def mon_IA2(num_joueur:int, la_partie:dict)->str:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
     direction=random.choice("NSEO")
-    direction_prec=direction #La décision prise sera la direction précédente le prochain tour
+    global direction_prec
+    dir_pos=directions_possibles(partie.get_arene(la_partie),num_joueur)
+    print(f'les directions possibles pour {num_joueur}:{dir_pos}')
     dir_pos=choix_box(partie.get_arene(la_partie),num_joueur,10)
-    if dir_pos=='':
-        direction=random.choice('NOSE')
+    print(f'le joueur{num_joueur} a pris {dir_pos}')
+    if not dir_pos:
+        direction = direction_prec  # Continue dans la dernière direction viable
+        if direction_prec=="N":
+            direction="S"
+        elif direction_prec=="S":
+            direction="N"
+        elif direction_prec=="E":
+            direction="O"
+        elif direction_prec=="O":
+            direction="E"
     else:
-        direction=random.choice(dir_pos)
+        direction = random.choice(dir_pos)
+    direction_prec = direction
     return direction
 def mon_IA(num_joueur:int, la_partie:dict)->str:
     """Fonction qui va prendre la decision du prochain coup pour le joueur de numéro ma_couleur
@@ -150,6 +170,12 @@ def mon_IA(num_joueur:int, la_partie:dict)->str:
         direction=random.choice(dir_pos)
     return direction
 
+
+
+
+
+
+
 if __name__=="__main__":
     parser = argparse.ArgumentParser()  
     parser.add_argument("--equipe", dest="nom_equipe", help="nom de l'équipe", type=str, default='Non fournie')
@@ -168,3 +194,5 @@ if __name__=="__main__":
             actions_joueur=mon_IA2(int(id_joueur),la_partie)
             le_client.envoyer_commande_client(actions_joueur)
     le_client.afficher_msg("terminé")
+
+
