@@ -55,11 +55,11 @@ def directions_possibles(l_arene:dict,num_joueur:int)->str:
     serp=arene.get_serpent(l_arene,num_joueur)
     val_tete=arene.get_val_boite(l_arene,serp[0],serp[1])
     lgn,col=arene.get_dim(l_arene) 
-    if 0<=serp[0]-1 <= lgn-1 and not arene.est_mur(serp[1],serp[0]-1)  and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
+    if 0<=serp[0]-1 <= lgn-1 and not arene.est_mur(serp[0]-1,serp[1]) and arene.get_val_boite(l_arene,serp[0]-1,serp[1])<=val_tete:
         res+="N"
     if col-1>=serp[1]+1 >= 0 and not arene.est_mur(serp[0],serp[1]+1) and arene.get_val_boite(l_arene,serp[0],serp[1]+1)<=val_tete: 
         res+="O"
-    if 0<=serp[0]+1 <= lgn-1 and not arene.est_mur(serp[1],serp[0]+1) and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
+    if 0<=serp[0]+1 <= lgn-1 and not arene.est_mur(serp[0]+1,serp[1]) and arene.get_val_boite(l_arene,serp[0]+1,serp[1])<=val_tete:
         res+="S"
     if col-1>=serp[1]-1 >= 0 and not arene.est_mur(serp[0],serp[1]-1) and arene.get_val_boite(l_arene,serp[0],serp[1]-1)<=val_tete:
         res+="E"
@@ -185,13 +185,14 @@ def mon_IA2(num_joueur:int, la_partie:dict)->str:
     Returns:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
-    direction=random.choice("NSEO")
+    direction=random.choice("NOSE")
     direction_prec=direction
     dir_pos=choix_box(partie.get_arene(la_partie),num_joueur,10)
     if dir_pos=='':
         direction=random.choice('NOSE')
     else:
         direction=random.choice(dir_pos)
+    return direction
 
 def mon_IA(num_joueur:int, la_partie:dict)->str:
     """Fonction qui va prendre la decision du prochain coup pour le joueur de numéro ma_couleur
