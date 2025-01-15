@@ -227,6 +227,6 @@ if __name__=="__main__":
         ok,id_joueur,le_jeu,_=le_client.prochaine_commande()
         if ok:
             la_partie=partie.partie_from_str(le_jeu)
-            actions_joueur=mon_IA(int(id_joueur),la_partie)
+            actions_joueur=mon_IA2(int(id_joueur),la_partie)
             le_client.envoyer_commande_client(actions_joueur)
     le_client.afficher_msg("terminé")
