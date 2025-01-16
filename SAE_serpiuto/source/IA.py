@@ -221,7 +221,8 @@ def prioriser_multiplication(l_arene, num_joueur):
     directions = directions_possibles(l_arene, num_joueur)
     serp = arene.get_serpent(l_arene, num_joueur)
     val_tete = arene.get_val_boite(l_arene, serp[0], serp[1])
-    if val_tete 2:
+    if val_tete>2:
+        pass
         
 
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
