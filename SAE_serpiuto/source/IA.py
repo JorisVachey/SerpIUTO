@@ -124,9 +124,11 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
     serp = arene.get_serpent(l_arene, num_joueur)[0]
     val_tete = arene.get_val_boite(l_arene, serp[0], serp[1])
     calque = fabriquer_calque(l_arene, num_joueur)
+    possible_directions = directions_possibles(l_arene, num_joueur)
     directions = {"N": (-1, 0), "S": (1, 0), "E": (0, 1), "O": (0, -1)}
 
-    for direction, (dx, dy) in directions.items():
+    for direction in possible_directions:
+        dx, dy = directions[direction]
         for dist in range(1, dist_max + 1):
             pos = (serp[0] + dx * dist, serp[1] + dy * dist)
             if est_sur_arene(l_arene, pos):
