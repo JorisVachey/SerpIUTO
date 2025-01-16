@@ -81,7 +81,7 @@ def objets_voisinage(l_arene:dict, num_joueur, dist_max:int):
             continue
         visited.add((x, y))
 
-        if dist > 0:
+        if dist > 0 and arene.get_val_boite(l_arene, x, y) not in [-4,-5] and (arene.get_val_boite(l_arene, x, y) < arene.get_val_boite(l_arene, serp[0], serp[1]) or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>1):
             val_objet = arene.get_val_boite(l_arene, x, y)
             prop = arene.get_proprietaire(l_arene, x, y)
             for direction in directions:
@@ -108,16 +108,26 @@ def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
         tuple: la cellule qui nous intéresse le plus
     """  
     choix_direction=None
+    score_dist={1:20,2:10,3:3,4:2,5:2,6:2,7:2,8:1,9:1,10:1,11:1,12:1,13:1,14:1,15:1}
+    val_par_obj={0:1,1:2,2:4,-1:3,-2:5,-3:2}
     directions=objets_voisinage(l_arene,num_joueur,dist_max)
     score_ch=0
+    serp = arene.get_serpent(l_arene,num_joueur)[0]
     for x,y in directions.items():
         compteur=0
         score=0
         while compteur<len(y):
-            score+=y[compteur][1]/y[compteur][0]
+            if y[compteur][0] in val_par_obj.keys():
+                score+=score_dist[y[compteur][0]]*val_par_obj[y[compteur][1]]/y[compteur][0]
+            elif y[compteur][0]>15:
+                if arene.get_val_boite(l_arene,serp[0],serp[1])>arene.get_val_boite(l_arene,y[compteur][0],y[compteur][1]) or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1])>y[compteur][0]:
+                    score+=y[compteur][1]/y[compteur][0]+3
+                else:
+                    score-=4
             if choix_direction is None or score>score_ch:
                 choix_direction=x
                 score_ch=score
+            print(f'la direction {x} a un score de {score}')
             compteur+=1
     return choix_direction
 
