@@ -83,7 +83,7 @@ def get(l_arene,pos):
         return arene.get_val_boite(l_arene, pos[0], pos[1])
 
 def fabriquer_calque(l_arene: dict, num_joueur: int) -> matrice.Matrice:
-    """Fabrique le calcque de l'arene en utilisant l'inondation
+    """Fabrique le calque de l'arene en utilisant l'inondation
     Args:
         l_arene (dict): l'arène considérée
         num_joueur (int): le numéro du joueur considéré
@@ -125,11 +125,13 @@ def objets_voisinage(l_arene: dict, num_joueur: int, dist_max: int) -> dict:
             (distance, val_objet, prop) où distance indique le nombre de cases jusqu'à l'objet et id_objet
             val_obj indique la valeur de l'objet ou de la boîte et prop indique le propriétaire de la boîte
     """
-    res = {"N": [], "S": [], "E": [], "O": []}
+    dire=directions_possibles(l_arene, num_joueur)
+    res = {d: [] for d in dire}
     serp = arene.get_serpent(l_arene, num_joueur)[0]
     val_tete = arene.get_val_boite(l_arene, serp[0], serp[1])
     calque = fabriquer_calque(l_arene, num_joueur)
     directions = {"N": (-1, 0), "S": (1, 0), "E": (0, 1), "O": (0, -1)}
+    directions = {d: (dx, dy) for d, (dx, dy) in directions.items() if d in dire}
 
     for direction, (dx, dy) in directions.items():
         for dist in range(1, dist_max + 1):
@@ -138,7 +140,6 @@ def objets_voisinage(l_arene: dict, num_joueur: int, dist_max: int) -> dict:
                 if 0 < arene.get_val_boite(l_arene, pos[0], pos[1]) <= val_tete:
                     res[direction].append((dist, arene.get_val_boite(l_arene, pos[0], pos[1]), arene.get_proprietaire(l_arene, pos[0], pos[1])))
 
-    res = {k: v for k, v in res.items() if v}
     return res
 
 def calculer_score_direction(l_arene, num_joueur, serp, objets):
@@ -156,13 +157,15 @@ def calculer_score_direction(l_arene, num_joueur, serp, objets):
     """
     score_dist = {1:20, 2:10, 3:3, 4:2, 5:2, 6:2, 7:2, 8:1, 9:1, 10:1, 11:1, 12:1, 13:1, 14:1, 15:1}
     val_par_obj = {0:1, 1:2, 2:4, -1:3, -2:5, -3:2}
+    if arene.get_val_boite(l_arene,serp[0],serp[1]):
+        del val_par_obj[-3]
     score = 0
     for dist, val_obj, prop in objets:
-        if dist in val_par_obj.keys():
+        if val_obj in val_par_obj.keys() and prop != arene.get_proprietaire(l_arene,serp[0],serp[1]):
             score += score_dist[dist] * val_par_obj[val_obj] / dist
-        elif dist >= 15:
+        elif val_obj >= 3:
             if arene.get_val_boite(l_arene, serp[0], serp[1]) > arene.get_val_boite(l_arene, dist, val_obj) or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1]) > dist:
-                score += val_obj / dist + 3
+                score += (val_obj / dist)*2
         else:
             score -= 5
     
