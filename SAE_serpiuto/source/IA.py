@@ -90,16 +90,18 @@ def fabriquer_calque(l_arene,num_joueur:int):
     """
     lgn,col=arene.get_dim(l_arene)
     calque=matrice.Matrice(lgn,col)
+    serp = arene.get_serpent(l_arene, num_joueur)[0]
+    matrice.set_val(calque, serp[0], serp[1], 0)
     i=0
-    fin=(lgn-1,col-1)
-    while get(l_arene,fin) is None or charge is True :
+    charge=True
+    while charge:
         charge=False
         for ligne in range(lgn):
             for colonne in range(col):
                 pos=(ligne,colonne)
                 voisins_calque=((pos[0]-1,pos[1]),(pos[0]+1,pos[1]),(pos[0],pos[1]-1),(pos[0],pos[1]+1))
                 for voisin in voisins_calque:
-                    if est_sur_arene(l_arene, voisin) and get(calque, voisin) == i and get(calque, pos) is None and not arene.est_mur(l_arene, pos[0], pos[1]):
+                    if est_sur_arene(l_arene, voisin) and matrice.get_val(calque, voisin[0], voisin[1]) == i and matrice.get_val(calque, pos[0], pos[1]) is None and not arene.est_mur(l_arene, pos[0], pos[1]):
                         matrice.set_val(calque,pos[0],pos[1],i+1)
                         charge=True
         i+=1
