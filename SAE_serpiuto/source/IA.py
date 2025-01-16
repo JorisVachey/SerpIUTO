@@ -184,6 +184,36 @@ def choix_box(l_arene:dict,num_joueur:int,dist_max:int)->tuple:
             compteur+=1
     return choix_direction
 
+def prioriser_multiplication(l_arene, num_joueur):
+    """
+    Fonction qui permet de prioriser la multiplication lorsque le serpent a plus de 2 points sur sa tête.
+
+    Args:
+        l_arene (dict): l'arène considérée
+        num_joueur (int): le numéro du joueur considéré
+
+    Returns:
+        str: La direction priorisée pour la multiplication ('N', 'S', 'E', 'O').
+    """
+    directions = directions_possibles(l_arene, num_joueur)
+    serp = arene.get_serpent(l_arene, num_joueur)
+    val_tete = arene.get_val_boite(l_arene, serp[0], serp[1])
+    if val_tete >= 2:
+        choix_case = choix_box(l_arene, num_joueur, 10)
+        if choix_case:
+            x, y = choix_case
+            if x < serp[0]:
+                return 'N'
+            elif x > serp[0]:
+                return 'S'
+            elif y < serp[1]:
+                return 'O'
+            elif y > serp[1]:
+                return 'E'
+    if directions:
+        return random.choice(directions)
+    return random.choice('NSEO')
+
 def mon_IA2(num_joueur:int, la_partie:dict)->str:
     """Fonction qui va prendre la decision du prochain coup pour le joueur de numéro ma_couleur
 
@@ -194,24 +224,28 @@ def mon_IA2(num_joueur:int, la_partie:dict)->str:
     Returns:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
-    direction=random.choice("NSEO")
-    global direction_prec
-    dir_pos=directions_possibles(partie.get_arene(la_partie),num_joueur)
-    print(f'les directions possibles pour {num_joueur}:{dir_pos}')
-    dir_pos=choix_box(partie.get_arene(la_partie),num_joueur,10)
-    print(f'le joueur{num_joueur} a pris {dir_pos}')
-    if not dir_pos:
-        direction = direction_prec  # Continue dans la dernière direction viable
-        if direction_prec=="N":
-            direction="S"
-        elif direction_prec=="S":
-            direction="N"
-        elif direction_prec=="E":
-            direction="O"
-        elif direction_prec=="O":
-            direction="E"
-    else:
-        direction = random.choice(dir_pos)
+    # direction=random.choice("NSEO")
+    # global direction_prec
+    # dir_pos=directions_possibles(partie.get_arene(la_partie),num_joueur)
+    # print(f'les directions possibles pour {num_joueur}:{dir_pos}')
+    # dir_pos=choix_box(partie.get_arene(la_partie),num_joueur,10)
+    # print(f'le joueur{num_joueur} a pris {dir_pos}')
+    # if not dir_pos:
+    #     direction = direction_prec
+    #     if direction_prec=="N":
+    #         direction="S"
+    #     elif direction_prec=="S":
+    #         direction="N"
+    #     elif direction_prec=="E":
+    #         direction="O"
+    #     elif direction_prec=="O":
+    #         direction="E"
+    # else:
+    #     direction = random.choice(dir_pos)
+    # direction_prec = direction
+    # return direction
+    l_arene = partie.get_arene(la_partie)
+    direction = prioriser_multiplication(l_arene, num_joueur)
     direction_prec = direction
     return direction
 
