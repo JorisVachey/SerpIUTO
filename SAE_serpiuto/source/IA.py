@@ -141,7 +141,7 @@ def objets_voisinage(l_arene: dict, num_joueur: int, dist_max: int) -> dict:
     res = {k: v for k, v in res.items() if v}
     return res
 
-def calculer_score_direction(l_arene, num_joueur, serp, direction, objets):
+def calculer_score_direction(l_arene, num_joueur, serp, objets):
     """Calcule le score pour une direction donnée en fonction des objets dans cette direction
 
     Args:
@@ -149,7 +149,7 @@ def calculer_score_direction(l_arene, num_joueur, serp, direction, objets):
         num_joueur (int): le numéro du joueur considéré
         serp (tuple): position de la tête du serpent
         direction (str): la direction considérée
-        objets (list): liste des objets dans cette direction
+        objets (list): liste de la liste des objets dans cette direction
 
     Returns:
         int: le score calculé pour la direction
@@ -157,34 +157,12 @@ def calculer_score_direction(l_arene, num_joueur, serp, direction, objets):
     score_dist = {1:20, 2:10, 3:3, 4:2, 5:2, 6:2, 7:2, 8:1, 9:1, 10:1, 11:1, 12:1, 13:1, 14:1, 15:1}
     val_par_obj = {0:1, 1:2, 2:4, -1:3, -2:5, -3:2}
     score = 0
-
     for dist, val_obj, prop in objets:
-        score += calculer_score_objet(l_arene, num_joueur, serp, dist, val_obj, score_dist, val_par_obj)
-    
-    return score
-
-def calculer_score_objet(l_arene, num_joueur, serp, dist, val_obj, score_dist, val_par_obj):
-    """Calcule le score pour un objet donné en fonction de sa distance et de sa valeur
-
-    Args:
-        l_arene (dict): l'arène considérée
-        num_joueur (int): le numéro du joueur considéré
-        serp (tuple): position de la tête du serpent
-        dist (int): distance de l'objet
-        val_obj (int): valeur de l'objet
-        score_dist (dict): dictionnaire des scores par distance
-        val_par_obj (dict): dictionnaire des valeurs par objet
-
-    Returns:
-        int: le score calculé pour l'objet
-    """
-    score = 0
-
-    if dist in val_par_obj.keys():
-        score += score_dist[dist] * val_par_obj[val_obj] / dist
-    elif dist > 15:
-        if arene.get_val_boite(l_arene, serp[0], serp[1]) > arene.get_val_boite(l_arene, dist, val_obj) or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1]) > dist:
-            score += val_obj / dist + 3
+        if dist in val_par_obj.keys():
+            score += score_dist[dist] * val_par_obj[val_obj] / dist
+        elif dist >= 15:
+            if arene.get_val_boite(l_arene, serp[0], serp[1]) > arene.get_val_boite(l_arene, dist, val_obj) or serpent.get_temps_surpuissance(l_arene["serpents"][num_joueur-1]) > dist:
+                score += val_obj / dist + 3
         else:
             score -= 5
     
@@ -207,14 +185,10 @@ def choix_box(l_arene: dict, num_joueur: int, dist_max: int) -> str:
     choix_direction, score_ch = None, float('-inf')
 
     for direction, objets in directions.items():
-        score = calculer_score_direction(l_arene, num_joueur, serp, direction, objets)
-        if score > score_ch or choix_direction is None:
+        score = calculer_score_direction(l_arene, num_joueur, serp, objets)
+        if choix_direction is None or score > score_ch:
             choix_direction, score_ch = direction, score
         print(f'La direction {direction} a un score de {score}')
-
-    if choix_direction is None:
-        print(f'Aucune direction valide trouvée pour le joueur {num_joueur}')
-        choix_direction = random.choice("NSEO")  # Choisir une direction aléatoire si aucune direction valide n'est trouvée
 
     return choix_direction
 
@@ -230,25 +204,25 @@ def mon_IA2(num_joueur:int, la_partie:dict)->str:
     Returns:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
-    direction=random.choice("NSEO")
+    dir_choisie=random.choice("NSEO")
     global direction_prec
     dir_pos=directions_possibles(partie.get_arene(la_partie),num_joueur)
     print(f'les directions possibles pour {num_joueur}:{dir_pos}')
-    dir_choisie=choix_box(partie.get_arene(la_partie),num_joueur,10)
-    print(f'le joueur{num_joueur} a pris {dir_pos}')
+    dir_choisie=choix_box(partie.get_arene(la_partie),num_joueur,14)
+    print(f'le joueur{num_joueur} a pris {dir_choisie}')
     if dir_choisie is None:
         if direction_prec=="N":
-            direction="S"
+            dir_choisie="S"
         elif direction_prec=="S":
-            direction="N"
+            dir_choisie="N"
         elif direction_prec=="E":
-            direction="O"
+            dir_choisie="O"
         elif direction_prec=="O":
-            direction="E"
+            dir_choisie="E"
     else:
-        direction = random.choice(dir_pos)
-    direction_prec = direction
-    return direction
+        dir_choisie=random.choice(dir_choisie)
+    direction_prec = dir_choisie  # La décision prise sera la direction précédente le prochain tour
+    return dir_choisie
 
 
 
@@ -263,7 +237,7 @@ def mon_IA(num_joueur:int, la_partie:dict)->str:
         str: une des lettres 'N', 'S', 'E' ou 'O' indiquant la direction que prend la tête du serpent du joueur
     """
     direction=random.choice("NSEO")
-    global direction_prec
+    direction_prec = direction  # La décision prise sera la direction précédente le prochain tour
     direction_prec = direction  # La décision prise sera la direction précédente le prochain tour
     dir_pos=arene.directions_possibles(partie.get_arene(la_partie),num_joueur)
     if dir_pos=='':
